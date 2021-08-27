@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Page Title</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+  <link href="style.css" rel="stylesheet">
+</head>
+<body>
+  <div id="body">
+  <header>
+    <a><img src="placeholder-logo-1.png" class="logo"></a>
+    <ul class="nav main-nav desktop">
+      <li v-for="(item,i) in items" class="nav-item" :class="{active:i==selected}">
+        <a class="nav-link" href="#"
+        @click="selected=i">{{item.label}}</a>
+      </li>
+    </ul>
+    <ul class="nav main-nav">
+      <li>
+        <a class="nav-link" href="#" @click="menuScreen=false;searchScreen=searchScreen?false:true"><div style="transform: rotate(-45deg) scale(1.5);">&#9906;</div></a>
+      </li>
+      <li class="mobile">
+        <a v-if="menuScreen==false" class="nav-link" href="#" @click="select=false;menuScreen=true"><div style="transform:scale(1.2);">☰</div></a>
+        <a v-if="menuScreen==true" class="nav-link" href="#" @click="menuScreen=false"><div style="transform:scale(2.3);margin-left:5px">&times;</div></a>
+      </li>
+    </ul>
+    <div class="desktop">
+      <a class="btn secondary-btn">REQUEST DEMO</a>
+    </div>
+  </header>
+
+  <div class="main">
+    <div  v-if="selected!==false">
+      <ul class="nav flex-column">
+        <li @click="selected=false">
+          <a class="nav-link" href="#">← {{items[selected].label}}</a>
+        </li>
+        <li v-for="(child,c) in items[selected].children"
+        class="nav-item">
+          <a class="nav-link" href="#">{{child.label}}</a>
+        </li>
+      </ul>
+    </div>
+    <div v-if="searchScreen==true" class="search-screen">
+      <div class="search-bar">
+        <input class="form-control" placeholder="Search">
+        <div class="close-btn" style="transform:scale(2)" @click="searchScreen=false">&times;</div>
+      </div>
+    </div>
+    <div v-if="menuScreen==true" class="menu-screen mobile">
+      <ul class="nav flex-column">
+        <li v-for="(item,i) in items" class="nav-item" :class="{active:i==selected}">
+          <a class="nav-link" href="#"
+          @click="menuScreen=false;selected=i">{{item.label}}</a>
+        </li>
+        <li class="nav-item">
+          <a class="btn secondary-btn secondary-btn__dark" href="#">REQUEST DEMO</a>
+        </li>
+      </ul>
+      </div>
+  </div>
+
+  </div>
+
+  <script>
+    menuItems = [
+      {
+        label: 'Industries',
+        children: [
+          {
+            label:'Financial Services',
+            url:'#'
+          },
+          {
+            label:'Healthcare',
+            url:'#'
+          },
+          {
+            label:'Goverment',
+            url:'#'
+          }
+        ]
+      },
+      {
+        label:'Solutions',
+        url:'#'
+      },
+      {
+        label:'Enterprise Class AI',
+        url:'#'
+      },
+      {
+        label:'Knowledge Center',
+        url:'#'
+      },
+      {
+        label:'Company',
+        url:'#'
+      }
+    ];
+
+    app = new Vue({
+      el: '#body',
+      data: function(){
+        return {
+          items: menuItems,
+          selected: false,
+          searchScreen:false,
+          menuScreen:false
+        }
+      }
+    })
+
+  </script>
+</body>
+</html>
